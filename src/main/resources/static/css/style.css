@@ -1,0 +1,8 @@
+@charset "UTF-8";
+body {
+	background: url("/image/plane.png") no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
