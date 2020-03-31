@@ -12,5 +12,19 @@ public class UIController {
       return "index";
    }
    
+   @GetMapping("/rent")
+   public String getRent() {
+      return "rent";
+   }
+   
+   @GetMapping("/shuttle")
+   public String getShuttle() {
+      return "shuttle";
+   }
+   
+   @GetMapping("/hotel")
+   public String getHotel() {
+      return "hotel";
+   }
 
 }
