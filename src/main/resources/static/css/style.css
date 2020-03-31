@@ -6,3 +6,37 @@ body {
   -o-background-size: cover;
   background-size: cover;
 }
+
+.card {
+	width: 45%;
+	margin-top: 40px;
+	margin-left: 20px;
+	margin-bottom: 20px;
+}
+
+.card-header, .card-header-tabs {
+	background-color: #00004d !important;
+}
+
+li.nav-item a.active {
+   color: black !important;
+}
+
+.card-header-tabs > .nav-item > .nav-link {
+	border-right: 2px solid white;
+	border-top-right-radius: 1px;
+}
+
+.form-control {
+	border-top: none;
+	border-left: none;
+	border-right: none;
+	border-bottom: 1px solid black;
+	border-radius: 0px;
+}
+
+.form-group:hover {
+	color: blue;
+	font-weight: bold;
+}
+
