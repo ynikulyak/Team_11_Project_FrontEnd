@@ -26,5 +26,10 @@ public class UIController {
    public String getHotel() {
       return "hotel";
    }
+   
+   @GetMapping("/searchResult")
+   public String getResults() {
+      return "searchResult";
+   }
 
 }

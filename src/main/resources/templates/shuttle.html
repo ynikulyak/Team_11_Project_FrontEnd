@@ -4,34 +4,7 @@
 <div th:replace="header :: myheader"></div>
 </head>
 <body>
-
-	<nav class="navbar navbar-expand-lg navbar-light"
-		style="background-color: #ccebff;">
-		<a class="navbar-brand" href="#"> <img src="/image/logo.png"
-			width="30" height="30" class="d-inline-block align-top" alt=""
-			style="background-color: #ccebff;"> Flights
-		</a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse"
-			data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
-			aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarNavDropdown">
-			<ul class="navbar-nav">
-				<li class="nav-item "><a class="nav-link active" href="#">Home
-						<span class="sr-only">(current)</span>
-				</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">Features</a>
-				</li>
-				<li class="nav-item"><a class="nav-link" href="#">Pricing</a></li>
-			</ul>
-		</div>
-		<form class="form-inline">
-			<input class="form-control mr-sm-2" type="search"
-				placeholder="Search" aria-label="Search">
-			<button class="btn btn-info my-2 my-sm-0" type="submit">Search</button>
-		</form>
-	</nav>
+<nav th:insert="navbar :: navbar"></nav>
 
 	<div class="card">
 		<div class="card-header">
@@ -49,12 +22,12 @@
 		<div class="card-body">
 			<h3>Do you want to book a shuttle?</h3>
 			<div class="form-check">
-				<input class="form-check-input" type="radio" name="yes" id="yes"
+				<input class="form-check-input" type="radio" name="shuttleRadio" id="yes"
 					value="yes"> <label class="form-check-label" for="yes">
 					Yes </label>
 			</div>
 			<div class="form-check">
-				<input class="form-check-input" type="radio" name="no" id="no"
+				<input class="form-check-input" type="radio" name="shuttleRadio" id="no"
 					value="no"> <label class="form-check-label" for="no">
 					No </label>
 			</div>
