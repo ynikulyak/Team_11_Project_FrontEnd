@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+    <nav th:fragment="navbar">
+           <nav class="navbar navbar-expand-lg navbar-light"
+      style="background-color: #ccebff;">
+      <a class="navbar-brand" href="#"> <img src="/image/logo.png"
+         width="30" height="30" class="d-inline-block align-top" alt=""
+         style="background-color: #ccebff;"> Flights
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse"
+         data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
+         aria-expanded="false" aria-label="Toggle navigation">
+         <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+         <ul class="navbar-nav">
+            <li class="nav-item "><a class="nav-link active" href="/index">Home
+                  <span class="sr-only">(current)</span>
+            </a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Features</a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="#">Pricing</a></li>
+         </ul>
+      </div>
+      <form class="form-inline">
+         <input class="form-control mr-sm-2" type="search"
+            placeholder="Search" aria-label="Search">
+         <button class="btn btn-info my-2 my-sm-0" type="submit">Search</button>
+      </form>
+   </nav>
+    </nav>
+</body>
+</html>
