@@ -4,25 +4,29 @@
 <div th:replace="header :: myheader"></div>
 </head>
 <body>
-<nav th:insert="navbar :: navbar"></nav>
+	<nav th:insert="navbar :: navbar"></nav>
 
-<div class="card">
-  <div class="card-body">
-    <h4 class="card-title">Search Flight Results</h4>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-  </div>
-  <ul class="list-group list-group-flush">
-    <li class="list-group-item">Cras justo odio</li>
-    <li class="list-group-item">Dapibus ac facilisis in</li>
-    <li class="list-group-item">Vestibulum at eros</li>
-  </ul>
+	<div class="card">
 		<div class="card-body">
-			<a href="/index" class="card-link">Back to Search Page</a> <a
+			<h4 class="card-title">Search Flight Results</h4>
+			<p class="card-text"></p>
+		</div>
+		<ul class="list-group list-group-flush">
+		 <li class="list-group-item" style="color:blue;"><b>Loading...</b></li>
+		</ul>
+		<div class="card-body">
+			<a href="/index" class="card-link">Update Search</a> <a
 				href="/rent" class="card-link">Rent Car</a> <a href="/shuttle"
 				class="card-link">Book Shuttle</a> <a href="/hotel"
 				class="card-link">Book Hotel</a>
 
 
 		</div>
-	</div></body>
+	</div>
+	<script>
+	$(document).ready(function() { 
+		startSearchingFlights();
+	});
+	</script>
+</body>
 </html>

@@ -52,3 +52,16 @@ li.nav-item a.active {
 .error {
 	border: 2px red dashed;
 }
+
+.airportcode {
+	color: #00AAFF;
+}
+
+.flightcode {
+   color: #FF7700;
+}
+
+.details {
+	font-size: 0.7rem;
+	color: #666666;
+}
