@@ -5,28 +5,38 @@
 </head>
 <body>
 	<nav th:insert="navbar :: navbar"></nav>
-
-	<div class="card">
-		<div class="card-body">
-			<h4 class="card-title">Search Flight Results</h4>
-			<p class="card-text"></p>
+	<div class="row">
+		<div class="col-6">
+			<div class="card" style="width: 80%">
+				<div class="card-body">
+					<h4 class="card-title">Search Flight Results</h4>
+					<p class="card-text"></p>
+				</div>
+				<ul class="list-group list-group-flush">
+					<li class="list-group-item" style="color: blue;"><b>Loading...</b></li>
+				</ul>
+				<div class="card-body">
+					<a href="/index" class="card-link">Update Search</a> <a
+						href="/rent" class="card-link">Rent Car</a> <a href="/shuttle"
+						class="card-link">Book Shuttle</a> <a href="/hotel"
+						class="card-link">Book Hotel</a>
+				</div>
+			</div>
 		</div>
-		<ul class="list-group list-group-flush">
-		 <li class="list-group-item" style="color:blue;"><b>Loading...</b></li>
-		</ul>
-		<div class="card-body">
-			<a href="/index" class="card-link">Update Search</a> <a
-				href="/rent" class="card-link">Rent Car</a> <a href="/shuttle"
-				class="card-link">Book Shuttle</a> <a href="/hotel"
-				class="card-link">Book Hotel</a>
-
-
+		<div class="col">
+			<div class="card" id="selected-result" style="width: 90%">
+				<div class="card-body">
+					<h4 class="card-title">You selected:</h4>
+					<p class="flightsResult"></p>
+					<form method="get" id="bookFlightsForm" action="/booking"></form>
+				</div>
+			</div>
 		</div>
 	</div>
 	<script>
-	$(document).ready(function() { 
-		startSearchingFlights();
-	});
+		$(document).ready(function() {
+			startSearchingFlights();
+		});
 	</script>
 </body>
 </html>
