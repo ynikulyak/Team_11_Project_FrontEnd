@@ -61,6 +61,10 @@ li.nav-item a.active {
    color: #FF7700;
 }
 
+.radioBut {
+	float: right;
+}
+
 .details {
 	font-size: 0.7rem;
 	color: #666666;

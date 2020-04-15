@@ -19,6 +19,7 @@ function hideCalendar() {
 }
 
 var airportsRequestsCache = {};
+
 function airportAutoCompleteFunction(request, response) {
 	var term = request.term;
 	if (term in airportsRequestsCache) {
@@ -139,6 +140,8 @@ function initializeIndexPage() {
 	});
 }
 
+var currentFlightResults = [];
+
 function searchFlight(from, to, departure, returnDate) {
 	var number = 0;
 	$.ajax({
@@ -150,34 +153,56 @@ function searchFlight(from, to, departure, returnDate) {
 		dataType : "json",
 		success : function(data) {
 			$(".list-group").empty();
-			$(".card-text").append()
 			var prevFrom = null;
+			var switched = false;
+			var radioBut = null;
+			currentFlightResults = data;
 			$.each(data, function(index, element) {
+				if (prevFrom != element.fromAirportCode && prevFrom != null) {
+					switched = true;
+				}
 				prevFrom = prevFrom || element.fromAirportCode;
-				number = number + 1;
+
 				$(".list-group").append(
-						createEntryForElement(element, prevFrom));
+						createEntryForElement(element, prevFrom, radioBut,
+								switched));
 				prevFrom = element.fromAirportCode;
 			});
+			setUpFlightSelectors();
 		}
 	});
 	return false;
 }
 
-function createEntryForElement(element, prevFrom) {
+function createEntryForElement(element, prevFrom, radioBut, switched) {
+	if (switched) {
+		radioBut = "<input class='form-check-input' type='radio' name='returnRadio' id='"
+				+ element.id
+				+ "' value='"
+				+ element.id
+				+ "' style='float: right'>";
+	} else {
+		radioBut = "<input class='form-check-input' type='radio' name='depRadio' id='"
+				+ element.id
+				+ "' value='"
+				+ element.id
+				+ "' style='float: right'>";
+	}
+
 	var startLi = "<li class='list-group-item'>";
 	var html = '';
+
 	if (prevFrom != element.fromAirportCode) {
 		html += startLi + '<h3>Returning flights</h3></li>';
 	}
 
 	html += startLi + "<b>FLIGHT:</b> <span class='flightcode'>"
-			+ element.flightCode + "</span><br /> " + "<b>FROM: </b>"
-			+ element.airportTitleFrom + " (<b class='airportcode'>"
-			+ element.fromAirportCode + "</b>) <br/>" + "<b>TO: </b>"
-			+ element.airportTitleTo + " (<b class='airportcode'>"
-			+ element.toAirportCode + "</b>) <br/>"
-			+ "<span class='details'><b>Departure time: </b>"
+			+ element.flightCode + "</span><span class='radioBut'>" + radioBut
+			+ "</span><br /> " + "<b>FROM: </b>" + element.airportTitleFrom
+			+ " (<b class='airportcode'>" + element.fromAirportCode
+			+ "</b>) <br/>" + "<b>TO: </b>" + element.airportTitleTo
+			+ " (<b class='airportcode'>" + element.toAirportCode
+			+ "</b>) <br/>" + "<span class='details'><b>Departure time: </b>"
 			+ element.departure + "</span> "
 			+ "<span class='details'><b>Arrivale time: </b>" + element.arrival
 			+ "</span>" + "</li>";
@@ -187,6 +212,63 @@ function createEntryForElement(element, prevFrom) {
 function startSearchingFlights() {
 	searchFlight(getUrlParameter("from"), getUrlParameter("to"),
 			getUrlParameter("departure"), getUrlParameter("return"));
+
+	$("#selected-result").hide();
+}
+
+function setUpFlightSelectors() {
+	$("input[name$='depRadio']").click(function() {
+		$("#selected-result").show();
+		var flightId = $(this).val();
+		$("<input>").attr({
+			name : "selectedFrom",
+			id : flightId,
+			type : "hidden",
+			value : flightId
+		}).appendTo("form");
+		displayResult(flightId);
+	});
+	$("input[name$='returnRadio']")
+			.click(
+					function() {
+						var flightId = $(this).val();
+						$("<input>").attr({
+							name : "selectedTo",
+							id : flightId,
+							type : "hidden",
+							value : flightId
+						}).appendTo("form");
+						$(".flightsResult").append(
+								"<br><br><b>RETURNING FLIGHT</b><br><br>")
+						displayResult(flightId);
+						$(".flightsResult")
+								.append(
+										"<br><br><br><br><button type='submit' class='btn btn-warning' onclick='proceedToBookingPage();'>Book Flight</button>")
+					});
+}
+
+function proceedToBookingPage() {
+	$('#bookFlightsForm').submit();
+}
+
+function displayResult(flightId) {
+	for (var i = 0; i < currentFlightResults.length; i++) {
+		if (currentFlightResults[i].id == flightId) {
+			$(".flightsResult").append(
+					"<b>FROM:</b> " + currentFlightResults[i].fromAirportCode
+							+ ", " + currentFlightResults[i].airportTitleFrom
+							+ ", "
+							+ currentFlightResults[i].airportLocationFrom
+							+ "<br> <b>Departure Date:</b> "
+							+ currentFlightResults[i].departure
+							+ "<br><b>To:</b> "
+							+ currentFlightResults[i].toAirportCode + ", "
+							+ currentFlightResults[i].airportTitleTo + ", "
+							+ currentFlightResults[i].airportLocationTo
+							+ "<br> <b>Arrivale Date:</b> "
+							+ currentFlightResults[i].arrival);
+		}
+	}
 }
 
 // Returns GET variable from the current URL in browser.
@@ -203,3 +285,15 @@ function getUrlParameter(sParam) {
 		}
 	}
 }
+$(document).ready(function() {
+	hideCalendar();
+	$(".invalid-feedback").hide();
+
+	$('input[type="radio"]').click(function() {
+		if ($(this).val() === "yes") {
+			$('#calendar').show();
+		} else {
+			$('#calendar').hide();
+		}
+	});
+});
