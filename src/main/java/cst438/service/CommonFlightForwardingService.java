@@ -20,6 +20,7 @@ public class CommonFlightForwardingService {
    private String airportsUrl;
    private String airportUrl;
    private String flightUrl;
+   private String flightByIdUrl;
    private String flightsUrl;
 
    public CommonFlightForwardingService(@Value("${cfis.baseurl}") String baseUrl) {
@@ -27,6 +28,7 @@ public class CommonFlightForwardingService {
       this.airportsUrl = baseUrl + "/api/airports/v1/";
       this.airportUrl = baseUrl + "/api/airport/v1/";
       this.flightUrl = baseUrl + "/api/flight/v1/";
+      this.flightByIdUrl = baseUrl + "/api/flight/v1/id/";
       this.flightsUrl = baseUrl + "/api/flights/v1/";
    }
 
@@ -48,6 +50,14 @@ public class CommonFlightForwardingService {
    
    public Flight getFlight(String id) {
       String url = flightUrl + id;
+      log.info("Fetching JSON from " + url);
+      ResponseEntity<Flight> response = restTemplate.getForEntity(url, Flight.class);
+      log.info("Status code from CFIS server, flight:" + id + " :" + response.getStatusCodeValue());
+      return response.getBody();
+   }
+   
+   public Flight getFlightById(long id) {
+      String url = flightByIdUrl + id;
       log.info("Fetching JSON from " + url);
       ResponseEntity<Flight> response = restTemplate.getForEntity(url, Flight.class);
       log.info("Status code from CFIS server, flight:" + id + " :" + response.getStatusCodeValue());

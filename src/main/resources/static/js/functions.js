@@ -143,7 +143,6 @@ function initializeIndexPage() {
 var currentFlightResults = [];
 
 function searchFlight(from, to, departure, returnDate) {
-	var number = 0;
 	$.ajax({
 		method : "get",
 		url : "/commonFlightService/flights/" + encodeURIComponent(from) + '/'
@@ -172,6 +171,36 @@ function searchFlight(from, to, departure, returnDate) {
 		}
 	});
 	return false;
+}
+
+function initializeBookingPage() {
+	getFlightInfo(getUrlParameter("selectedFrom"), function(data) {
+		createFlightInfoHtml(data, "#flightInfo");
+	});
+	getFlightInfo(getUrlParameter("selectedTo"), function(data) {
+		createFlightInfoHtml(data, "#returnFlightInfo");
+	});
+}
+
+
+function getFlightInfo(id, callback) {
+	$.ajax({
+		method : "get",
+		url : "/commonFlightService/flightbyid/" + encodeURIComponent(id),
+		dataType : "json",
+		success : callback
+	});
+}
+
+function createFlightInfoHtml(data, container) {
+	$(container).empty();
+	$(container).append(
+			"<b>FROM:</b> " + data.fromAirportCode + ", "
+					+ data.airportTitleFrom + ", " + data.airportLocationFrom
+					+ "<br> <b>Departure Date:</b> " + data.departure
+					+ "<br><b>To:</b> " + data.toAirportCode + ", "
+					+ data.airportTitleTo + ", " + data.airportLocationTo
+					+ "<br> <b>Arrivale Date:</b> " + data.arrival);
 }
 
 function createEntryForElement(element, prevFrom, radioBut, switched) {
