@@ -35,6 +35,11 @@ public class CommonFlightServiceForwardingController {
       return commonFlightService.getFlight(code);
    }
    
+   @GetMapping("/commonFlightService/flightbyid/{id}")
+   public Flight getFlightById(@PathVariable("id") long id) {
+      return commonFlightService.getFlightById(id);
+   }
+   
    @GetMapping("/commonFlightService/flights/{from}/{to}")
    public List<Flight> getFlight(@PathVariable("from") String from, @PathVariable("to") String to, 
          @RequestParam("departure") String departureDate, @RequestParam("return") String returnDate){
