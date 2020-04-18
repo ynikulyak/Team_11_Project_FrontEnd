@@ -182,6 +182,37 @@ function initializeBookingPage() {
 	});
 }
 
+function createReservations() {
+	// Flight
+	createReservation(getUrlParameter('selectedFrom'), '6', 'yes', 'yes', 'yes', '34B');
+
+	// Return flight
+	createReservation(getUrlParameter('selectedTo'), '6', 'yes', 'yes', 'yes', '48A');
+}
+
+function createReservation(flightId, passengerId, rentalCar, shuttle, hotel, seatPref) {
+	if (!flightId || !passengerId) {
+		throw 'flightId and passengerId are required.';
+	}
+    $.ajax({
+		method : "post",
+		url : "/bookingFlightService/reservations/create",
+		dataType : "json",
+		contentType: "application/json",
+		data: JSON.stringify({
+			'flightId': flightId,
+			'passengerId': passengerId,
+   			'rentalCar': rentalCar,
+   			'shuttle': shuttle,
+   			'hotel': hotel,
+   			'seatPref': seatPref
+		}),
+		success : function(data) {
+			alert("RESULT: " + JSON.stringify(data));
+		}
+	});
+} 
+
 
 function getFlightInfo(id, callback) {
 	$.ajax({
