@@ -1,11 +1,5 @@
 package cst438.service;
 
-import java.util.Arrays;
-import java.util.List;
-
-import cst438.domain.Airport;
-import cst438.domain.Flight;
-import cst438.domain.Passenger;
 import cst438.domain.Reservation;
 
 import org.slf4j.Logger;
@@ -23,15 +17,12 @@ public class BookingFlightForwardingService {
    private final RestTemplate restTemplate;
    private final String reservationUrl;
    private final String reservationCreateUrl;
-   private final String passengerUrl;
-   private final String passengerUrlByEmail;
+
   
 
    public BookingFlightForwardingService(@Value("${rs.baseurl}") String baseUrl) {
          this.restTemplate = new RestTemplate();
          this.reservationUrl = baseUrl + "/api/reservations/v1/";
-         this.passengerUrl = baseUrl + "/api/passenger/v1/";
-         this.passengerUrlByEmail = baseUrl + "/api/passenger/v1/email/";
          this.reservationCreateUrl = baseUrl + "/api/reservation/v1/create";
       }
 
@@ -42,26 +33,10 @@ public class BookingFlightForwardingService {
       log.info("Status code from RS server, reservation:" + id + " :" + response.getStatusCodeValue());
       return response.getBody();
    }
-
-   public Passenger getPassengerById(Long id) {
-      String url = passengerUrl + id;
-      log.info("Fetching JSON from " + url);
-      ResponseEntity<Passenger> response = restTemplate.getForEntity(url, Passenger.class);
-      log.info("Status code from RS server, passenger:" + id + " :" + response.getStatusCodeValue());
-      return response.getBody();
-   }
-
-   public Passenger getPassengerByEmail(String email) {
-      String url = passengerUrlByEmail + email;
-      log.info("Fetching JSON from " + url);
-      ResponseEntity<Passenger> response = restTemplate.getForEntity(url, Passenger.class);
-      log.info("Status code from RS server, passenger:" + email + " :" + response.getStatusCodeValue());
-      return response.getBody();
-   }
    
    public Reservation create(Reservation reservation) {
-      if (reservation.flightId == null || reservation.passengerId == null) {
-         throw new IllegalArgumentException("flightId and passengerId are required.");
+      if (reservation.flightId == null) {
+         throw new IllegalArgumentException("flightId is required.");
       }
       reservation.id = null;
       log.info("Sending JSON (creation) to " + reservationCreateUrl);

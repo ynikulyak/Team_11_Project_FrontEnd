@@ -5,62 +5,137 @@
 </head>
 <body>
 
-   <nav th:insert="navbar :: navbar"></nav>
-   
-   <div class="card" style="width: 60%">
-    <div class="card-body">
-    <h1>Make reservation</h1>
-    
-    <h4>Flight Info</h4>
-    <br>
-    <div id="flightInfo" class="container">
-    </div>
-    <br>
-    <h4>Return flight Info</h4><br>
-    <div id="returnFlightInfo" class="container">
-    </div>
-    
-   
-   <hr>
-   <h4>Enter passenger info</h4>
-   <form>
-   <div class="form-group row">
-    <label for="firstName" class="col-sm-2 col-form-label">First Name: </label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control" id="firstName">
-    </div>
-  </div>
-  <div class="form-group row">
-    <label for="lastName" class="col-sm-2 col-form-label">Last Name: </label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control" id="lastName">
-    </div>
-  </div>
-  <div class="form-group row">
-    <label for="email" class="col-sm-2 col-form-label">Email</label>
-    <div class="col-sm-10">
-      <input type="email" class="form-control" id="email">
-    </div>
-  </div>
-  <div class="form-group row">
-    <label for="password" class="col-sm-2 col-form-label">Password</label>
-    <div class="col-sm-10">
-      <input type="password" class="form-control" id="password">
-    </div>
-  </div>
+	<nav th:insert="navbar :: navbar"></nav>
 
-  <div class="form-group row">
-    <div class="col-sm-10">
-      <button type="submit" class="btn btn-warning" onclick="createReservations();return false;">Make Reservation</button>
-    </div>
-  </div>
-</form>
-</div>
-</div>
-<script>
-$(document).ready(function(){
-	initializeBookingPage();
-})
-</script>
+	<div class="card" style="width: 60%">
+		<div class="card-body">
+			<h1>Make reservation</h1>
+
+			<form>
+				<h4>Flight Info</h4>
+				<br>
+				<div id="flightInfo" class="container"></div>
+				
+				
+				<br>
+				<div class="container">
+					<div class="form-group row">
+						<label for="email" class="col-sm-3 col-form-label">Seat
+							preference</label>
+						<div class="col-sm-2">
+							<input type="text" class="form-control" maxlength="4" id="seatPref1">
+						</div>
+					</div>
+				</div>
+
+
+				<hr>
+				<h4>Return flight Info</h4>
+				<br>
+				<div id="returnFlightInfo" class="container"></div>
+
+            <br>
+				<div class="container">
+					<div class="form-group row">
+						<label for="email" class="col-sm-3 col-form-label">Seat
+							preference</label>
+						<div class="col-sm-2">
+							<input type="text" class="form-control" maxlength="4" id="seatPref2">
+						</div>
+					</div>
+				</div>
+				
+				<hr>
+
+
+				<p>
+					<b>Do you want to rent a car?</b>
+				</p>
+				<div class="form-check">
+					<input class="form-check-input" type="radio" name="rentCarRadio"
+						id="yes1" value="Yes"> <label class="form-check-label"
+						for="yes1"> Yes </label>
+				</div>
+				<div class="form-check">
+					<input class="form-check-input" type="radio" name="rentCarRadio"
+						id="no1" value="No"> <label class="form-check-label"
+						for="no1"> No </label>
+				</div>
+				<br>
+				<p>
+					<b>Do you want to book a shuttle?</b>
+				</p>
+				<div class="form-check">
+					<input class="form-check-input" type="radio" name="shuttleRadio"
+						id="yes2" value="Yes"> <label class="form-check-label"
+						for="yes2"> Yes </label>
+				</div>
+				<div class="form-check">
+					<input class="form-check-input" type="radio" name="shuttleRadio"
+						id="no2" value="No"> <label class="form-check-label"
+						for="no2"> No </label>
+				</div>
+				<br>
+				<p>
+					<b>Do you want to book a hotel?</b>
+				</p>
+				<div class="form-check">
+					<input class="form-check-input" type="radio" name="bookHotelRadio"
+						id="yes3" value="Yes"> <label class="form-check-label"
+						for="yes3"> Yes </label>
+				</div>
+				<div class="form-check">
+					<input class="form-check-input" type="radio" name="bookHotelRadio"
+						id="no3" value="No"> <label class="form-check-label"
+						for="no3"> No </label>
+				</div>
+
+				<hr>
+				<h4>Enter passenger info</h4>
+
+				<div class="form-group row">
+					<label for="firstName" class="col-sm-2 col-form-label">First
+						Name: </label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control"  maxlength="49" id="firstName">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="lastName" class="col-sm-2 col-form-label">Last
+						Name: </label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" maxlength="49" id="lastName">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="email" class="col-sm-2 col-form-label">Email</label>
+					<div class="col-sm-10">
+						<input type="email" class="form-control" maxlength="99" id="email">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="passport" class="col-sm-2 col-form-label">Passport
+						#: </label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" maxlength="49" id="passportNumber">
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<div class="col-sm-10">
+						<button type="submit" class="btn btn-warning"
+						   id="submitButton"
+							onclick="createReservations();return false;">Make
+							Reservation</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script>
+		$(document).ready(function() {
+			initializeBookingPage();
+		})
+	</script>
 </body>
 </html>

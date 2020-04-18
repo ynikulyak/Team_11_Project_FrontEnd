@@ -4,10 +4,10 @@ public class Reservation {
    
    public Long id;
    public Long flightId;
-   public Long passengerId;
    public String firstName;
    public String lastName;
    public String email;
+   public String passportNumber;
    public String rentalCar;
    public String shuttle;
    public String hotel;
