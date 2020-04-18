@@ -36,5 +36,10 @@ public class UIController {
    public String getBooking() {
       return "booking";
    }
+   
+   @GetMapping("/reservation")
+   public String getReservation() {
+      return "reservation";
+   }
 
 }
