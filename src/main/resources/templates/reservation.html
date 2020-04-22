@@ -5,9 +5,23 @@
 </head>
 <body>
 
-   <nav th:insert="navbar :: navbar"></nav>
-   
-   <h1>Reservation template</h1>
+	<nav th:insert="navbar :: navbar"></nav>
 
+	<div class="card" id="reserve" style="width: 53%">
+		<div class="card-body">
+			<h3>Thank you for your reservation!</h3>
+			<br>
+
+			<div id="confirmation" class="container"></div>
+			<div id="confirmationReturn" class="container"></div>
+			
+
+		</div>
+	</div>
+	<script>
+      $(document).ready(function(){
+    	  initializeConfirmPage();
+      })
+      </script>
 </body>
 </html>

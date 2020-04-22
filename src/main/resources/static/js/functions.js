@@ -187,10 +187,17 @@ function redirecTo(page) {
 		url += encodeURIComponent(arguments[i]) + '=';
 		url += encodeURIComponent(arguments[i + 1]) + '&';
 	}
+	console.log('Redirecting to: ' + url);
 	document.location = url;
 }
 
-var bookingPageData = {};
+var bookingPageData = {
+	'flight' : null,
+	'returnFlight' : null,
+	'flightReservation' : null,
+	'returnFlightReservation' : null
+};
+
 function initializeBookingPage() {
 	console.log("Initializing page...");
 	var flightId = getUrlParameter("selectedFrom");
@@ -216,6 +223,73 @@ function initializeBookingPage() {
 	});
 }
 
+function initializeConfirmPage() {
+	console.log("Initializing page...");
+	var reservationId = getUrlParameter("id");
+	var arr = reservationId.split("_");
+	var reservationFlightId = null;
+	var returnFlightId;
+	for (var i = 0; i < arr.length; i++) {
+		if (!isNaN(arr[i]) && reservationFlightId == null) {
+			reservationFlightId = parseInt(arr[i]);
+		} else if (!isNaN(arr[i]) && reservationFlightId != null) {
+			returnFlightId = parseInt(arr[i]);
+		}
+	}
+
+	getReservationInfo(reservationFlightId, function(data) {
+		bookingPageData['flightReservation'] = data;
+		createReservationInfoHtml(data, "#confirmation");
+		console.log("Initialization of reservation completed");
+	});
+	getReservationInfo(returnFlightId, function(data) {
+		bookingPageData['returnFlightReservation'] = data;
+		createReturnReservationInfoHtml(data, "#confirmationReturn");
+		console.log("Initialization of return flight completed");
+	});
+}
+
+function createReservationInfoHtml(data, container) {
+	$(container).empty();
+	$(container).append(
+			"Reservation link was sent to your email: <b>" + data.email
+					+ "</b><br> <b>Passenger:</b> " + data.firstName + " "
+					+ data.lastName + "<br><b>Passport #:</b> "
+					+ data.passportNumber + "<br><br>" + "<b>FROM:</b> "
+					+ data.fromAirportCode + ", " + data.airportTitleFrom
+					+ ", " + data.airportLocationFrom
+					+ "<br> <b>Departure Date:</b> " + data.departure
+					+ "<br><b>To:</b> " + data.toAirportCode + ", "
+					+ data.airportTitleTo + ", " + data.airportLocationTo
+					+ "<br> <b>Arrival Date:</b> " + data.arrival
+					+ "<br><b>Seat #:</b> " + data.seatPref);
+}
+
+function createReturnReservationInfoHtml(data, container) {
+	$(container).empty();
+	$(container).append(
+			"<br><b>RETURN FLIGHT INFO</b><br><br>" + "<b>FROM:</b> "
+					+ data.fromAirportCode + ", " + data.airportTitleFrom
+					+ ", " + data.airportLocationFrom
+					+ "<br> <b>Departure Date:</b> " + data.departure
+					+ "<br><b>To:</b> " + data.toAirportCode + ", "
+					+ data.airportTitleTo + ", " + data.airportLocationTo
+					+ "<br> <b>Arrival Date:</b> " + data.arrival
+					+ "<br><b>Seat #:</b> " + data.seatPref
+					+ "<br><br><b>Car Rent: </b>" + data.rentalCar
+					+ "<br><b>Booked Hotel: </b>" + data.hotel
+					+ "<br><b>Shuttle: </b>" + data.shuttle);
+}
+
+function getReservationInfo(id, callback) {
+	$.ajax({
+		method : "get",
+		url : "/bookingFlightService/reservation/" + encodeURIComponent(id),
+		dataType : "json",
+		success : callback
+	});
+}
+
 function getValueAndValidate(selector) {
 	var value = $(selector).val();
 	value = value ? value.trim() : '';
@@ -229,9 +303,8 @@ function getValueAndValidate(selector) {
 
 function getCreatedReservationId() {
 	var bpd = bookingPageData;
-	return 'RSRV_' + bpd['flightReservation']['id'] + '_'
-			+ bpd['returnFlightReservation']['id'] + '_X'
-			+ Math.random().toPrecision(5).substr(2);
+	return 'reservation_' + bpd['flightReservation']['id'] + '_returnFlight_'
+			+ bpd['returnFlightReservation']['id'];
 }
 
 function createReservations() {
@@ -244,9 +317,12 @@ function createReservations() {
 	var email = getValueAndValidate('#email');
 	var passportNumber = getValueAndValidate('#passportNumber');
 
-	var rentalCar = getValueAndValidate('input[name=rentCarRadio]:checked') || 'No';
-	var shuttle = getValueAndValidate('input[name=shuttleRadio]:checked') || 'No';
-	var hotel = getValueAndValidate('input[name=bookHotelRadio]:checked') || 'No';
+	var rentalCar = getValueAndValidate('input[name=rentCarRadio]:checked')
+			|| 'No';
+	var shuttle = getValueAndValidate('input[name=shuttleRadio]:checked')
+			|| 'No';
+	var hotel = getValueAndValidate('input[name=bookHotelRadio]:checked')
+			|| 'No';
 
 	var seatPref1 = getValueAndValidate('#seatPref1');
 	var seatPref2 = getValueAndValidate('#seatPref2');
@@ -254,10 +330,11 @@ function createReservations() {
 	if (!flightId || !returnFlightId || !firstName || !lastName || !email
 			|| !passportNumber || !rentalCar || !shuttle || !hotel
 			|| !seatPref1 || !seatPref2) {
-		console.log('flight ids and passenger data are required: ' +
-				flightId + ' / ' + returnFlightId + ' / ' + firstName + ' / ' + lastName  + ' / ' + email
-				 + ' / ' + passportNumber + ' / ' +rentalCar + ' / ' +shuttle + ' / ' +hotel
-				 + ' / sp1: ' + seatPref1 + ' / sp2: ' + seatPref2);
+		console.log('flight ids and passenger data are required: ' + flightId
+				+ ' / ' + returnFlightId + ' / ' + firstName + ' / ' + lastName
+				+ ' / ' + email + ' / ' + passportNumber + ' / ' + rentalCar
+				+ ' / ' + shuttle + ' / ' + hotel + ' / sp1: ' + seatPref1
+				+ ' / sp2: ' + seatPref2);
 		return;
 	}
 
@@ -275,7 +352,7 @@ function createReservations() {
 						function(data) {
 							bookingPageData['returnFlightReservation'] = data;
 							var id = getCreatedReservationId();
-							redirecTo('/reservation/view', 'id', id);
+							redirecTo('/reservation', 'id', id);
 						});
 			});
 }
@@ -300,7 +377,7 @@ function createReservation(flightId, firstName, lastName, email,
 		}),
 		success : callback,
 		error : function(xhr, b, e) {
-			var s = e + "\n" + b + "\n" +xhr.responseText; 
+			var s = e + "\n" + b + "\n" + xhr.responseText;
 			alert("There was an error calling the server: \n" + s);
 			redirecToIndex(s);
 		}
@@ -438,6 +515,7 @@ function getUrlParameter(sParam) {
 		}
 	}
 }
+
 $(document).ready(function() {
 	hideCalendar();
 	$(".invalid-feedback").hide();
