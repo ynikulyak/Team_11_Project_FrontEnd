@@ -2,7 +2,6 @@ package cst438.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import cst438.domain.Passenger;
 import cst438.domain.Reservation;
 import cst438.service.BookingFlightForwardingService;
 
@@ -23,15 +22,6 @@ public class BookingFlightForwardingController {
    @Autowired
    private BookingFlightForwardingService bookingFlightService;
 
-   @GetMapping("/bookingFlightService/passenger/{id}")
-   public Passenger getPassenger(@PathVariable("id") long id) {
-      return bookingFlightService.getPassengerById(id);
-   }
-
-   @GetMapping("/bookingFlightService/passengerByEmail/{email}")
-   public Passenger getPassengerByEmail(@PathVariable("email") String email) {
-      return bookingFlightService.getPassengerByEmail(email);
-   }
 
    @GetMapping("/bookingFlightService/reservation/{id}")
    public Reservation getReservation(@PathVariable("id") long id) {
@@ -40,7 +30,7 @@ public class BookingFlightForwardingController {
 
    @PostMapping(path = "/bookingFlightService/reservations/create", consumes = "application/json", produces = "application/json")
    public Reservation createReservation(@RequestBody Reservation reservation) {
-      log.info("Creating reservation flightId/passengerId: " + reservation.flightId + "/" + reservation.passengerId
+      log.info("Creating reservation flightId/passengerId: " + reservation.flightId + "/" 
             + ", seat: " + reservation.seatPref);
       return bookingFlightService.create(reservation);
    }

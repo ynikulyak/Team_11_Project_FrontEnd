@@ -11,5 +11,5 @@ public class Flight {
    public String airportLocationFrom;
    public String airportTitleTo;
    public String airportLocationTo;
-
+  
 }
